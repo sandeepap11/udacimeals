@@ -46,7 +46,9 @@ class App extends Component {
       return result
     }, []).reduce((ingredientsList, { ingredientLines }) => {
 
-        ingredientsList.concat(ingredientLines)
+
+        ingredientLines = ingredientsList.concat(ingredientLines)
+
         return ingredientLines
 
     }, [])
@@ -96,7 +98,7 @@ class App extends Component {
         }
       )
 
-  }
+      }
 
 
   render() {
@@ -200,7 +202,9 @@ class App extends Component {
           onRequestClose={this.closeIngredientsModal}
           contentLabel='Modal'
         >
-          {ingredientsModalOpen && <ShoppingList list={this.generateShoppingList()}/>}
+          {
+            ingredientsModalOpen && <ShoppingList list={this.generateShoppingList()}/>
+          }
         </Modal>
 
       </div>
@@ -209,29 +213,29 @@ class App extends Component {
 }
 
 function mapStateToProps ({ calendar, food }){
-const dayOrder = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
-
-return{
-
-calendar : dayOrder.map((day) => ({
-
-	day, meals: Object.keys(calendar[day]).reduce((meals, meal) => {
-
-		meals[meal]= calendar[day][meal] ? food[calendar[day][meal]] : null
-
-		return meals
-	}, {})
-}
-))
-}
-}
-
-function mapDispatchToProps(dispatch){
+  const dayOrder = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
 
   return{
 
-    selectRecipe: (data) => {dispatch(addRecipe(data))},
-    remove: (data) => {dispatch(removeFromCalendar(data))}
+  calendar : dayOrder.map((day) => ({
+
+  	day, meals: Object.keys(calendar[day]).reduce((meals, meal) => {
+
+  		meals[meal]= calendar[day][meal] ? food[calendar[day][meal]] : null
+
+  		return meals
+  	}, {})
+  }
+  ))
+  }
+  }
+
+function mapDispatchToProps(dispatch){
+
+  return {
+
+    selectRecipe: (data) => { dispatch(addRecipe(data)) },
+    remove: (data) => { dispatch(removeFromCalendar(data)) }
 
   }
 }
